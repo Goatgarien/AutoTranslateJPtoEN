@@ -5,7 +5,7 @@
 #include <curl/curl.h>
 #include <json/json.h>
 
-const std::string API_KEY = "your-api-key-here";
+std::string API_KEY = "your-api-key";
 const std::string DEEPL_API_URL = "https://api-free.deepl.com/v2/translate";
 
 size_t write_callback(void* contents, size_t size, size_t nmemb, void* userp) {
@@ -73,18 +73,20 @@ std::string translate_japanese_substrings(const std::string& line) {
 }
 
 int main(int argc, char* argv[]) {
-	if (argc != 3) {
-		std::cerr << "Usage: " << argv[0] << " <input_file> <output_file>" << std::endl;
+	if (argc != 4) {
+		std::cerr << "Usage: " << argv[0] << " <api_key> <input_file> <output_file>" << std::endl;
 		return 1;
 	}
 
-	std::ifstream file(argv[1]);
+	API_KEY = argv[1];
+	
+	std::ifstream file(argv[2]);
 	if (!file) {
 		std::cerr << "Error: Could not open input file." << std::endl;
 		return 1;
 	}
 
-	std::ofstream output_file(argv[2]);
+	std::ofstream output_file(argv[3]);
 	if (!output_file) {
 		std::cerr << "Error: Could not open output file." << std::endl;
 		return 1;
